@@ -4,9 +4,10 @@ import { toggle, deleteTodo } from '../todos/todosSlice';
 
 
 const TodoList = () => {
-    const i = useSelector((state) => state.todos.items);
-    //console.log(i);
     const dispatch = useDispatch()
+    const i = useSelector((state) => state.todos.items);
+    const activeFilter = useSelector((state) => state.todos.activeFilter);
+
 
     //delete todo
     const handleDeleteTodo = (id) => {
@@ -15,9 +16,18 @@ const TodoList = () => {
         }
     }
 
+    //filter
+    let filteredA = [];
+    filteredA = i;
+    if (activeFilter !== "all") {
+        filteredA = i.filter((todo) => activeFilter === "active" ?
+            todo.completed === false : todo.completed === true
+        )
+    }
+
     return (
         <ul className="todo-list">
-            {i.map((item) => (
+            {filteredA.map((item) => (
                 <li key={item.id} className={item.completed ? "completed" : ""}>
                     <div className="view">
                         <input
